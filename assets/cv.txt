@@ -1,0 +1,29 @@
+CURRICULUM VITAE
+Joël Mathys
+
+EDUCATION
+PhD in Computer Science (2022 - Present)
+  ETH Zurich, Switzerland
+
+Master's Degree in Computer Science (2020 - 2022)
+  University Name
+
+Bachelor's Degree in Computer Science (2017 - 2020)
+  University Name
+
+RESEARCH EXPERIENCE
+PhD Researcher (2022 - Present)
+  ETH Zurich - Distributed Computing Group
+
+Research Intern (Summer 2021)
+  Research Institution Name
+
+SKILLS
+Programming Languages: Python, C++, Java, JavaScript, Go
+Technologies: PyTorch, TensorFlow, JAX, Kubernetes, Docker
+
+PUBLICATIONS
+See publications.html for a complete list of research publications.
+
+NOTE: This is a placeholder file. Replace assets/cv.pdf with your actual CV PDF file.
+The website will automatically link to it from the CV page.

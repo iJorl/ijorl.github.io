@@ -1,0 +1,214 @@
+{
+  "publications": [
+  {
+    "id": "paper-001",
+    "title": "Abstract Visual Reasoning Enabled by Language",
+    "authors": ["Giacomo Camposampiero", "Loïc Houmard", "Benjamin Estermann", "Joël Mathys", "Roger Wattenhofer"],
+    "tldr": "First to showcase that LLMs can be applied on the ARC-AGI benchmark to solve abstract visual reasoning problems by using language structure.",
+    "conference": "NVVLR @ CVPR 2023",
+    "date": {
+      "month": "June",
+      "year": 2023
+    },
+    "arxiv": "https://arxiv.org/abs/2303.04091",
+    "bibtex": null,
+    "image": "assets/images/papers/arc.png",
+    "selected": true
+  },
+  {
+    "id": "paper-002",
+    "title": "Traffic4cast at neurips 2022–predict dynamics along graph edges from sparse node data: Whole city traffic and eta from stationary vehicle detectors",
+    "authors": ["Moritz Neun", "Christian Eichenberger", "Henry Martin", "Markus Spanring", "Rahul Siripurapu", "Daniel Springer", "Leyan Deng", "Chenwang Wu", "Defu Lian", "Min Zhou", "Martin Lumiste", "Andrei Ilie", "Xinhua Wu", "Cheng Lyu", "Qing-Long Lu", "Vishal Mahajan", "Yichao Lu", "Jiezhang Li", "Junjun Li", "Yue-Jiao Gong", "Florian Grötschla", "Joël Mathys", "Ye Wei", "He Haitao", "Hui Fang", "Kevin Malm", "Fei Tang", "Michael Kopp", "David Kreil", "Sepp Hochreiter"],
+    "tldr": "Traffic Forecasting using graph neural networks to predict traffic dynamics and estimated time of arrival (ETA) from sparse sensor data in urban environments.",
+    "conference": "Competition Track @ NeurIPS 2022",
+    "date": {
+      "month": "December",
+      "year": 2022
+    },
+    "arxiv": "https://arxiv.org/abs/2303.07758",
+    "bibtex": null,
+    "image": "assets/images/papers/traffic4cast.png",
+    "selected": false
+  },
+  {
+    "id": "paper-006",
+    "title": "Flood and Echo Net: Algorithmically Aligned GNNs that Generalize",
+    "authors": ["Joël Mathys", "Florian Grötschla", "Kalyan Varma Nadimpalli", "Roger Wattenhofer"],
+    "tldr": "Introduces the Flood-and-Echo GNN architecture inspired by distributed algorithms, enabling more scalable and generalizable graph reasoning.",
+    "conference": "preprint",
+    "date": {
+      "month": "October",
+      "year": 2023
+    },
+    "arxiv": "https://arxiv.org/abs/2310.06970",
+    "bibtex": null,
+    "image": "assets/images/papers/fe.png",
+    "selected": false
+  },
+    {
+    "id": "paper-rec",
+    "title": "Learning Graph Algorithms With Recurrent Graph Neural Networks",
+    "authors": ["Florian Grötschla", "Joël Mathys", "Roger Wattenhofer"],
+    "tldr": "Use recurrent graph neural networks to learn on algorithmic tasks and extrapolate to graphs 1000 times larger.",
+    "conference": "GCLR@AAAI 2023",
+    "date": {
+      "month": "February",
+      "year": 2023
+    },
+    "arxiv": "https://arxiv.org/abs/2212.04934",
+    "bibtex": null,
+    "image": "assets/images/papers/recurrent_alg.png",
+    "selected": false
+  },
+  {
+    "id": "paper-007",
+    "title": "Hierarchical Graph Structures for Congestion and ETA Prediction",
+    "authors": ["Florian Grötschla", "Joël Mathys"],
+    "tldr": "Uses hierarchical graph representations and multi-task learning to jointly predict congestion levels and ETA on real-world road networks.",
+    "conference": "Competition Track @ NeurIPS 2022",
+    "date": {
+      "month": "November",
+      "year": 2022
+    },
+    "arxiv": "https://arxiv.org/abs/2211.11762",
+    "bibtex": null,
+    "image": "assets/images/papers/hierarchical_traffic.png",
+    "selected": false
+  },
+  {
+    "id": "paper-008",
+    "title": "Synthetic Data for Blood Vessel Network Extraction",
+    "authors": ["Joël Mathys", "A. Plesner", "Jorel Elmiger", "Roger Wattenhofer"],
+    "tldr": "Proposes a synthetic pipeline to generate vascular networks and corresponding imagery to pre-train models for blood vessel segmentation when annotated real data is scarce.",
+    "conference": "SynthData @ ICLR 2025",
+    "date": {
+      "month": "May",
+      "year": 2025
+    },
+    "arxiv": "https://arxiv.org/abs/2504.11858",
+    "bibtex": null,
+    "image": "assets/images/papers/synth_vessels.png",
+    "selected": false
+  },
+  {
+    "id": "paper-009",
+    "title": "GraphFSA: A Finite State Automaton Framework for Algorithmic Learning on Graphs",
+    "authors": ["Florian Grötschla", "Joël Mathys", "Christoffer Raun", "Roger Wattenhofer"],
+    "tldr": "Proposes a framework that models algorithmic graph tasks using finite state automata, enabling interpretable algorithmic graph learning.",
+    "conference": "ECAI 2024",
+    "date": {
+      "month": "August",
+      "year": 2024
+    },
+    "arxiv": "https://arxiv.org/abs/2408.11042",
+    "bibtex": null,
+    "image": "assets/images/papers/graphfsa.png",
+    "selected": false
+  },
+  {
+    "id": "paper-010",
+    "title": "SURF: A Generalization Benchmark for GNNs Predicting Fluid Dynamics",
+    "authors": ["Stefan Künzli", "Florian Grötschla", "Joël Mathys", "Roger Wattenhofer"],
+    "tldr": "Introduces SURF, a benchmark designed to evaluate a model's ability to generalize across different fluid regimes and resolutions in physics simulations.",
+    "conference": "LoG 2023",
+    "date": {
+      "month": "October",
+      "year": 2023
+    },
+    "arxiv": "https://arxiv.org/abs/2310.20049",
+    "bibtex": null,
+    "image": "assets/images/papers/surf.png",
+    "selected": false
+  },
+  {
+    "id": "paper-011",
+    "title": "Decentralized Graph Processing for Reachability Queries",
+    "authors": ["Joël Mathys", "Robin Fritsch", "Roger Wattenhofer"],
+    "tldr": "Develops decentralized labeling scheme for answering reachability queries efficiently.",
+    "conference": "ADMA 2022",
+    "date": {
+      "month": "December",
+      "year": 2022
+    },
+    "arxiv": "https://dl.acm.org/doi/10.1007/978-3-031-22064-7_36",
+    "bibtex": null,
+    "image": "assets/images/papers/queries.png",
+    "selected": false
+  },
+  {
+    "id": "paper-012",
+    "title": "Learn to Jump: Adaptive Random Walks for Long-Range Propagation through Graph Hierarchies",
+    "authors": ["Joël Mathys", "Federico Errica"],
+    "tldr": "Introduces adaptive random-walk mechanisms that allow long-range graph propagation by dynamically selecting jump levels in hierarchical graph structures.",
+    "conference": "ComBayNS @ ICJNN 2025",
+    "date": {
+      "month": "July",
+      "year": 2025
+    },
+    "arxiv": "https://arxiv.org/abs/2509.01381",
+    "bibtex": null,
+    "image": "assets/images/papers/jump.png",
+    "selected": true
+  },
+  {
+    "id": "paper-013",
+    "title": "Reinforcement Learning for Locally Checkable Labeling Problems",
+    "authors": ["Florian Grötschla", "Joël Mathys", "Loïc Holbein", "Roger Wattenhofer"],
+    "tldr": "Applies a verifier driven learning approach to solve locally checkable labeling problems for neural algorithmic reasoning.",
+    "conference": "ALA @ AAMAS 2025",
+    "date": {
+      "month": "May",
+      "year": 2025
+    },
+    "arxiv": null,
+    "bibtex": null,
+    "image": "assets/images/papers/lclp.png",
+    "selected": false
+  },
+  {
+    "id": "paper-014",
+    "title": "Beyond Interpolation: Extrapolative Reasoning with Reinforcement Learning and Graph Neural Networks",
+    "authors": ["Niccolò Grillo", "Andrea Toccaceli", "Joël Mathys", "Benjamin Estermann", "Stefania Fresca", "Roger Wattenhofer"],
+    "tldr": "Investigates Generalisation in Transformers and GNNs on Puzzle Data using RL and GNNs to perform extrapolative reasoning.",
+    "conference": "NEURMAD @ AAAI 2025",
+    "date": {
+      "month": "February",
+      "year": 2025
+    },
+    "arxiv": "https://arxiv.org/abs/2502.04042",
+    "bibtex": null,
+    "image": "assets/images/papers/neurmad.png",
+    "selected": false
+  },
+  {
+    "id": "paper-015",
+    "title": "Rethinking Message Passing for Algorithmic Alignment",
+    "authors": ["Joël Mathys", "Florian Grötschla", "Kalyan Varma Nadimpalli", "Roger Wattenhofer"],
+    "tldr": "Proposes alternative message-passing mechanisms with better alignment to algorithmic graph computations and improved generalization properties.",
+    "conference": "Neurreps @ NeurIPS 2024",
+    "date": {
+      "month": "December",
+      "year": 2024
+    },
+    "arxiv": "https://openreview.net/forum?id=06V4SHkhMn",
+    "bibtex": null,
+    "image": "assets/images/papers/fe.png",
+    "selected": true
+  },
+  {
+    "id": "paper-016",
+    "title": "A New Perspective for Graph Learning Architecture Design: Linearize Your Depth Away",
+    "authors": ["Joël Mathys", "Roger Wattenhofer"],
+    "tldr": "Investigates using State-Space Model Linearization as a general graph architecture technique that effectively linearizes sequential depth to improve deep graph learning.",
+    "conference": "NPGML @ NeurIPS 2025",
+    "date": {
+      "month": "December",
+      "year": 2025
+    },
+    "arxiv": "https://openreview.net/forum?id=lybxAx4Msq#discussion",
+    "bibtex": null,
+    "image": "assets/images/papers/linearize_depth.png",
+    "selected": true
+  }
+  ]
+}
