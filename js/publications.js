@@ -77,6 +77,9 @@ function createPublicationCard(publication) {
 
   // Build the links
   let linksHTML = '';
+  if (publication.website) {
+    linksHTML += `<a href="${publication.website}" target="_blank" rel="noopener noreferrer">Website</a>`;
+  }
   if (publication.arxiv) {
     linksHTML += `<a href="${publication.arxiv}" target="_blank" rel="noopener noreferrer">arXiv</a>`;
   }
@@ -126,6 +129,11 @@ function createPublicationCard(publication) {
     `;
   }
 
+  // HTML-escape bibtex content for safe display
+  const bibtexEscaped = publication.bibtex
+    ? publication.bibtex.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    : '';
+
   // Build the card HTML with flex layout
   const cardHTML = `
     <div class="paper-card-image">
@@ -145,8 +153,8 @@ function createPublicationCard(publication) {
         ${linksHTML}
       </div>
       <div class="bibtex-section" id="bibtex-${publication.id}">
-        <div class="bibtex-code">${publication.bibtex}</div>
-        <button onclick="copyBibtex('${publication.id}')" style="margin-top: 0.5rem; padding: 0.5rem 1rem; background-color: #f5f5f5; border: 1px solid #e0e0e0; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">Copy</button>
+        <pre class="bibtex-code">${bibtexEscaped}</pre>
+        <button class="bibtex-copy-btn" onclick="copyBibtex('${publication.id}')">Copy BibTeX</button>
       </div>
     </div>
   `;

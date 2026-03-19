@@ -418,6 +418,26 @@ main {
   font-size: 0.85rem;
   overflow-x: auto;
   margin-top: var(--spacing-sm);
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.bibtex-copy-btn {
+  margin-top: var(--spacing-sm);
+  padding: 0.5rem 1rem;
+  background-color: var(--light-gray);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+
+.bibtex-copy-btn:hover {
+  background-color: var(--accent-color);
+  color: var(--light-bg);
+  border-color: var(--accent-color);
 }
 
 /* ==================== Publications Page ==================== */
