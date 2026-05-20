@@ -1,0 +1,45 @@
+---
+// A tiny SVG with SMIL animations — message flowing along edges,
+// nodes pulsing on a staggered loop. No JS framework needed.
+---
+<svg viewBox="0 0 320 160" class="animated-graph" xmlns="http://www.w3.org/2000/svg">
+  <line x1="40" y1="80" x2="160" y2="80" stroke="#94a3b8" stroke-width="2" />
+  <line x1="160" y1="80" x2="280" y2="80" stroke="#94a3b8" stroke-width="2" />
+  <line x1="160" y1="80" x2="220" y2="135" stroke="#94a3b8" stroke-width="2" />
+  <line x1="160" y1="80" x2="220" y2="25" stroke="#94a3b8" stroke-width="2" />
+
+  <circle cx="40" cy="80" r="14" fill="#2563eb">
+    <animate attributeName="r" values="14;19;14" dur="2s" begin="0s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="160" cy="80" r="14" fill="#2563eb">
+    <animate attributeName="r" values="14;19;14" dur="2s" begin="0.5s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="280" cy="80" r="14" fill="#2563eb">
+    <animate attributeName="r" values="14;19;14" dur="2s" begin="1s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="220" cy="135" r="14" fill="#2563eb">
+    <animate attributeName="r" values="14;19;14" dur="2s" begin="1s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="220" cy="25" r="14" fill="#2563eb">
+    <animate attributeName="r" values="14;19;14" dur="2s" begin="1s" repeatCount="indefinite" />
+  </circle>
+
+  <circle r="6" fill="#f97316">
+    <animateMotion dur="3s" repeatCount="indefinite" path="M40,80 L160,80 L280,80" />
+  </circle>
+  <circle r="6" fill="#f97316">
+    <animateMotion dur="3s" repeatCount="indefinite" path="M40,80 L160,80 L220,25" />
+  </circle>
+  <circle r="6" fill="#f97316">
+    <animateMotion dur="3s" repeatCount="indefinite" path="M40,80 L160,80 L220,135" />
+  </circle>
+</svg>
+
+<style>
+  .animated-graph {
+    width: 100%;
+    max-width: 420px;
+    margin: 1.5rem auto;
+    display: block;
+  }
+</style>

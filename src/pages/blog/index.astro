@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const modules = import.meta.glob('./posts/*.{md,mdx}', { eager: true });
+const posts = Object.values(modules).map((mod: any) => ({
+  url: mod.url,
+  frontmatter: mod.frontmatter,
+}));
+const sorted = posts.sort((a, b) =>
+  new Date(b.frontmatter.date).valueOf() - new Date(a.frontmatter.date).valueOf()
+);
+
+const fmt = (d: string | Date) =>
+  new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<BaseLayout title="Blog - Joël Mathys">
+  <section>
+    <h1>Blog</h1>
+    <p>Notes on research, code, and things I'm thinking about.</p>
+
+    {sorted.length === 0 ? (
+      <p><em>No posts yet.</em></p>
+    ) : (
+      <ul class="blog-index">
+        {sorted.map(post => (
+          <li>
+            <a href={post.url} class="blog-card">
+              <div class="blog-card-image">
+                <img src={post.frontmatter.image} alt={post.frontmatter.imageAlt || post.frontmatter.title} />
+              </div>
+              <div class="blog-card-content">
+                <h3>{post.frontmatter.title}</h3>
+                <span class="blog-date">{fmt(post.frontmatter.date)}</span>
+                {post.frontmatter.summary && <p>{post.frontmatter.summary}</p>}
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</BaseLayout>

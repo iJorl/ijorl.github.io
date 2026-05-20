@@ -1,0 +1,33 @@
+---
+const { type = 'info', title } = Astro.props;
+---
+<aside class={`callout callout-${type}`}>
+  {title && <strong class="callout-title">{title}</strong>}
+  <slot />
+</aside>
+
+<style>
+  .callout {
+    border-left: 4px solid var(--accent-color, #2563eb);
+    background: var(--accent-light, #dbeafe);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    border-radius: 4px;
+  }
+  .callout-title {
+    display: block;
+    color: var(--accent-dark, #1e40af);
+    margin-bottom: 0.4rem;
+  }
+  .callout :global(p:last-child) { margin-bottom: 0; }
+  .callout-warn {
+    border-color: #f59e0b;
+    background: #fef3c7;
+  }
+  .callout-warn .callout-title { color: #92400e; }
+  .callout-tip {
+    border-color: #0d9488;
+    background: #ccfbf1;
+  }
+  .callout-tip .callout-title { color: #115e59; }
+</style>

@@ -1,0 +1,130 @@
+---
+layout: ../../../layouts/BlogPost.astro
+title: "Hello, MDX!"
+date: 2026-05-20
+summary: "A tour of what's possible in MDX blog posts — Markdown, components, math, animations, and more."
+image: /assets/images/papers/linearized.png
+imageAlt: "Figure from the Linearized Graph Sequence Models paper"
+---
+
+import Callout from '../../../components/Callout.astro';
+import AnimatedGraph from '../../../components/AnimatedGraph.astro';
+
+This is the first post on this blog. It's written in **MDX** — Markdown with JSX-style components mixed in. That means prose like usual, but with custom HTML, Astro components, math, and interactive elements dropped in whenever needed.
+
+## Standard Markdown still works
+
+You get all the usual bits: **bold**, *italic*, `inline code`, [links](https://astro.build), and lists:
+
+- bullet one
+- bullet two with `code`
+- bullet three with $E = mc^2$ — see below for math
+
+> Block quotes for citing things or making a point.
+
+Tables work too:
+
+| Tool       | Build step | Used here |
+| ---------- | ---------- | --------- |
+| Astro      | yes        | ✓         |
+| MDX        | yes        | ✓         |
+| Markdown   | optional   | ✓         |
+| KaTeX      | no runtime | ✓         |
+
+## Code blocks with syntax highlighting
+
+```python
+def flood_and_echo(graph, root):
+    """Toy implementation of the flood-and-echo pattern."""
+    visited = {root}
+    frontier = [root]
+    while frontier:
+        next_frontier = []
+        for node in frontier:
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    next_frontier.append(neighbor)
+        frontier = next_frontier
+    return visited
+```
+
+Astro ships with Shiki — same highlighter as VS Code — so syntax highlighting works for any language without extra setup.
+
+## LaTeX math
+
+Inline: the softmax is $\sigma(z_i) = \frac{e^{z_i}}{\sum_j e^{z_j}}$, and message passing follows
+
+$$
+h_v^{(k+1)} = \phi\!\left( h_v^{(k)},\; \bigoplus_{u \in \mathcal{N}(v)} \psi\!\left(h_u^{(k)}, h_v^{(k)}, e_{uv}\right) \right).
+$$
+
+Math works thanks to `remark-math` + `rehype-katex` (KaTeX renders server-side, so no JS at view time).
+
+## Custom components
+
+<Callout type="info" title="Why MDX?">
+  Components let you build reusable widgets — admonitions like this one, embedded plots, citation widgets, demo buttons. You write them once in `src/components/` and pull them into any post.
+</Callout>
+
+<Callout type="warn" title="Heads up">
+  Component import paths are relative. From a post under `src/pages/blog/posts/`, that's `../../../components/Whatever.astro`.
+</Callout>
+
+<Callout type="tip" title="Tip">
+  Need interactivity (state, click handlers)? Add a UI framework integration (`npx astro add react` or `... svelte`) and use the `client:load` directive on components that need to hydrate.
+</Callout>
+
+## Animation (pure SVG, no JS)
+
+Here's a tiny animated graph — SMIL animation, no framework needed:
+
+<AnimatedGraph />
+
+Orange dots are messages flowing along the edges; nodes pulse on a staggered loop.
+
+## Images
+
+Standard `<img>` works — drop assets into `public/` and reference by absolute path:
+
+<img src="/assets/images/papers/linearized.png" alt="Linearized graph sequence model figure" />
+
+## Video
+
+Self-hosted HTML5 video:
+
+```html
+<video controls width="100%" src="/assets/videos/demo.mp4" />
+```
+
+Or embed YouTube/Vimeo via iframe — just write the JSX-flavored HTML inline:
+
+```html
+<iframe
+  width="100%"
+  height="400"
+  src="https://www.youtube.com/embed/VIDEO_ID"
+  title="YouTube video"
+  frameborder="0"
+  allowfullscreen
+></iframe>
+```
+
+## Inline HTML & styles
+
+Because MDX accepts JSX-flavored markup, you can drop in styled elements directly without leaving the post:
+
+<div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0;">
+  <div style="flex: 1; min-width: 180px; padding: 1rem; background: #f5f5f5; border-radius: 8px;">
+    <strong>Column A</strong>
+    <p style="margin: 0;">Free-form layout without leaving the post.</p>
+  </div>
+  <div style="flex: 1; min-width: 180px; padding: 1rem; background: #dbeafe; border-radius: 8px;">
+    <strong>Column B</strong>
+    <p style="margin: 0;">Useful for figure-caption pairs or side-by-side comparisons.</p>
+  </div>
+</div>
+
+## That's it
+
+Pipeline: write `.mdx` → `npm run build` → static HTML in `dist/`. Frontmatter at the top, components imported inline, the rest is just Markdown.

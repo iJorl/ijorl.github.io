@@ -293,7 +293,7 @@
       "arxiv": "https://openreview.net/forum?id=06V4SHkhMn",
       "bibtex": "@inproceedings{mathys_rethinking_2025,\n  title = {Rethinking {{Message Passing}} for {{Algorithmic Alignment}}},\n  booktitle = {{{NeurIPS}} 2024 {{Workshop}} on {{Symmetry}} and {{Geometry}} in {{Neural Representations}}},\n  author = {Mathys, Jo{\\\"e}l and Gr{\\\"o}tschla, Florian and Nadimpalli, Kalyan Varma and Wattenhofer, Roger},\n  year = 2025,\n  month = feb,\n  abstract = {Most Graph Neural Networks are based on the principle of message-passing, where all neighboring nodes exchange messages with each other simultaneously. We want to challenge this paradigm by introducing the Flood and Echo Net, a novel architecture that aligns neural computation with the principles of distributed algorithms. In our method, nodes sparsely activate upon receiving a message, leading to a wave-like activation pattern that traverses the graph. Through these sparse but parallel activations, the Net becomes more expressive than traditional MPNNs which are limited by the 1-WL test and also is provably more efficient in terms of message complexity. Moreover, the mechanism's ability to generalize across graphs of varying sizes positions it as a practical architecture for the task of algorithmic learning. We test the Flood and Echo Net on a variety of synthetic tasks and find that the algorithmic alignment of the execution improves generalization to larger graph sizes.},\n  langid = {english}\n}",
       "image": "assets/images/papers/fe.png",
-      "selected": true,
+      "selected": false,
       "website": null
     },
     {
@@ -312,7 +312,7 @@
       "arxiv": "https://openreview.net/forum?id=lybxAx4Msq#discussion",
       "bibtex": "@inproceedings{mathys_new_2025a,\n  title = {A {{New Perspective}} for {{Graph Learning Architecture Design}}: {{Linearize Your Depth Away}}},\n  shorttitle = {A {{New Perspective}} for {{Graph Learning Architecture Design}}},\n  booktitle = {New {{Perspectives}} in {{Graph Machine Learning}}},\n  author = {Mathys, Jo{\\\"e}l and Wattenhofer, Roger},\n  year = 2025,\n  month = oct,\n  abstract = {Designing effective graph learning architectures is central to making learning on structured and relational data feasible and scalable. Crucially, such designs must incorporate sufficient inductive bias to capture and leverage the graph topology. Simultaneously, they have to balance this objective with efficiently utilizing modern hardware, and remaining effectively trainable, even at scale. The current proposed architectures and paradigms range from message-passing neural networks on the graph topology to graph-informed transformers and virtual compute structures. Especially, the latter techniques often translate useful concepts and insights from graph theory in order to improve stability, mixing time, or bottlenecks. In this work, we highlight a linearization technique from the recently proposed Graph State-Space Model, as a powerful, general tool to design or improve graph learning architectures. At its core, the technique simplifies and reduces sequential computational depth and improves execution speed, while largely preserving trainability. Furthermore, the tool is versatile enough to be applied as a drop-in module across existing architectures. We showcase this flexibility by adapting Cayley Graph Propagation, yielding a simple, deeper and faster architecture.},\n  langid = {english}\n}",
       "image": "assets/images/papers/linearize_depth.png",
-      "selected": true,
+      "selected": false,
       "website": null
     },
     {
@@ -377,6 +377,48 @@
       "bibtex": "@inproceedings{minder_salsaclrs_2023,\n  title = {{{SALSA-CLRS}}: {{A Sparse}} and {{Scalable Benchmark}} for {{Algorithmic Reasoning}}},\n  shorttitle = {{{SALSA-CLRS}}},\n  booktitle = {The {{Second Learning}} on {{Graphs Conference}}},\n  author = {Minder, Julian and Gr{\\\"o}tschla, Florian and Mathys, Jo{\\\"e}l and Wattenhofer, Roger},\n  year = 2023,\n  month = nov,\n  abstract = {We introduce an extension to the CLRS algorithmic learning benchmark, prioritizing scalability and the utilization of sparse representations. Many algorithms in CLRS require global memory or information exchange, mirrored in its execution model, which constructs fully connected graphs (not sparse) based on the underlying problem. Despite CLRS's aim of assessing how effectively learned algorithms can generalize to larger instances, the existing execution model becomes a significant constraint due to its demanding memory requirements and runtime (hard to scale). Simultaneously, certain algorithms do not demand a fully connected graph; these algorithms, primarily distributed in nature, align closely with the message-passing paradigm employed by Graph Neural Networks. Hence, we propose SALSA-CLRS, an extension of the current CLRS benchmark specifically with scalability and sparseness in mind. Our approach includes adapted algorithms from the original CLRS benchmark and introduces new problems from distributed and randomized algorithms. Moreover, we perform a thorough empirical evaluation of our benchmark. Code is publicly available at https://github.com/jkminder/salsa-clrs.},\n  langid = {english}\n}",
       "image": "assets/images/papers/salsa.png",
       "selected": false,
+      "website": null
+    },
+    {
+      "id": "lorenc_nvium_2026",
+      "title": "N-vium: Mixture-of-Exits Transformer for Accelerated Exact Generation",
+      "authors": [
+        "Aleksander Lorenc",
+        "Frédéric Berdoz",
+        "Joël Mathys",
+        "Roger Wattenhofer"
+      ],
+      "tldr": "We extend standard transformers to directly learn a mixture of distributions, where sampling remains exact so tokens learn to use depth adaptively. Because tokens can commit early, we can parallelize the remaining computation with later tokens, achieving up to 57.9% speedup at 1.5B scale with no perplexity cost.",
+      "conference": "preprint",
+      "date": {
+        "month": "May",
+        "year": 2026
+      },
+      "arxiv": "https://arxiv.org/abs/2605.13190",
+      "bibtex": "@misc{lorenc_nvium_2026,\n  title = {N-Vium: {{Mixture-of-Exits Transformer}} for {{Accelerated Exact Generation}}},\n  shorttitle = {N-Vium},\n  author = {Lorenc, Aleksander and Berdoz, Fr{\\'e}d{\\'e}ric and Mathys, Jo{\\\"e}l and Wattenhofer, Roger},\n  year = 2026,\n  month = may,\n  number = {arXiv:2605.13190},\n  eprint = {2605.13190},\n  primaryclass = {cs},\n  publisher = {arXiv},\n  doi = {10.48550/arXiv.2605.13190},\n  archiveprefix = {arXiv},\n  keywords = {Computer Science - Machine Learning}\n}",
+      "image": "assets/images/papers/nvium.png",
+      "selected": true,
+      "website": null
+    },
+    {
+      "id": "mathys_linearized_2026",
+      "title": "From Message-Passing to Linearized Graph Sequence Models",
+      "authors": [
+        "Joël Mathys",
+        "Basil Rohner",
+        "Saku Peltonen",
+        "Roger Wattenhofer"
+      ],
+      "tldr": "We show how to decouple information propagation and processing depth in graph neural networks (GNNs). This allows us to recast key architectural graph learning aspects into the design of the input sequence.",
+      "conference": "preprint",
+      "date": {
+        "month": "May",
+        "year": 2026
+      },
+      "arxiv": "https://arxiv.org/abs/2605.12358",
+      "bibtex": "@misc{mathys_linearized_2026,\n  title = {From {{Message-Passing}} to {{Linearized Graph Sequence Models}}},\n  author = {Mathys, Jo{\\\"e}l and Rohner, Basil and Peltonen, Saku and Wattenhofer, Roger},\n  year = 2026,\n  month = may,\n  number = {arXiv:2605.12358},\n  eprint = {2605.12358},\n  primaryclass = {cs},\n  publisher = {arXiv},\n  doi = {10.48550/arXiv.2605.12358},\n  archiveprefix = {arXiv},\n  keywords = {Computer Science - Machine Learning}\n}",
+      "image": "assets/images/papers/linearized.png",
+      "selected": true,
       "website": null
     }
   ]
