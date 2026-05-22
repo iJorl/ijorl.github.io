@@ -8,4 +8,380 @@ image: /assets/images/papers/linearized.png
 imageAlt: "Placeholder figure"
 ---
 
+import Paper from '../../../components/Paper.astro';
+
 *Draft.*
+
+## Claude's suggestions
+
+A curated paper map of flow matching, from foundations through 2026. To be edited / pruned / expanded as the post takes shape.
+
+### 1. Foundations / precursors
+
+<Paper
+  title="Neural ODEs"
+  url="https://arxiv.org/abs/1806.07366"
+  authors="Chen et al."
+  venue="NeurIPS 2018"
+>
+Parameterizes the hidden-state derivative with a neural net; the seed of continuous normalizing flows.
+</Paper>
+
+<Paper
+  title="FFJORD"
+  url="https://arxiv.org/abs/1810.01367"
+  authors="Grathwohl et al."
+  venue="ICLR 2019"
+>
+Scales CNFs via Hutchinson's trace estimator; trains by maximum likelihood with simulation-in-the-loop.
+</Paper>
+
+### 2. The 2022–2023 breakthrough
+
+<Paper
+  title="Flow Matching for Generative Modeling"
+  url="https://arxiv.org/abs/2210.02747"
+  authors="Lipman, Chen, Ben-Hamu, Nickel, Le (Meta)"
+  venue="ICLR 2023"
+>
+Simulation-free regression on closed-form conditional velocity fields; recovers diffusion as a special case.
+</Paper>
+
+<Paper
+  title="Rectified Flow"
+  url="https://arxiv.org/abs/2209.03003"
+  authors="Liu, Gong, Liu"
+  venue="ICLR 2023 spotlight"
+>
+Straight-line interpolants + reflow → one-step sampling.
+</Paper>
+
+<Paper
+  title="Stochastic Interpolants"
+  url="https://arxiv.org/abs/2303.08797"
+  authors="Albergo, Boffi, Vanden-Eijnden"
+  venue="2023"
+>
+Unifies flow and diffusion via a tunable noise level. [Precursor](https://arxiv.org/abs/2209.15571): Albergo & Vanden-Eijnden, 2022.
+</Paper>
+
+<Paper
+  title="Conditional Flow Matching / OT-CFM"
+  url="https://arxiv.org/abs/2302.00482"
+  authors="Tong et al."
+  venue="TMLR 2024"
+>
+FM with arbitrary source distributions; minibatch-OT couplings straighten flows. (`torchcfm`.)
+</Paper>
+
+<Paper
+  title="Multisample Flow Matching"
+  url="https://arxiv.org/abs/2304.14772"
+  authors="Pooladian, Ben-Hamu, Domingo-Enrich, Amos, Lipman, Chen"
+  venue="ICML 2023"
+>
+Non-trivial source–target couplings via minibatch OT; straighter flows, fewer NFEs. Sister paper to OT-CFM.
+</Paper>
+
+<Paper
+  title="On Kinetic Optimal Probability Paths"
+  url="https://arxiv.org/abs/2306.06626"
+  authors="Shaul, Chen, Nickel, Le, Lipman"
+  venue="ICML 2023"
+>
+Kinetic-energy view of FM paths; characterizes kinetic-optimal interpolants.
+</Paper>
+
+<Paper
+  title="Action Matching"
+  url="https://arxiv.org/abs/2210.06662"
+  authors="Neklyudov et al."
+  venue="ICML 2023"
+>
+Learns continuous dynamics from temporal marginals — snapshots, not trajectories.
+</Paper>
+
+### 3. Extensions & theory
+
+<Paper
+  title="Riemannian Flow Matching"
+  url="https://arxiv.org/abs/2302.03660"
+  authors="Chen & Lipman"
+  venue="ICLR 2024"
+>
+FM on arbitrary manifolds — foundational for protein/molecule work.
+</Paper>
+
+<Paper
+  title="Equivariant Flow Matching"
+  url="https://arxiv.org/abs/2306.15030"
+  authors="Klein, Krämer, Noé"
+  venue="NeurIPS 2023"
+>
+FM + equivariant networks + OT couplings for symmetric systems.
+</Paper>
+
+<Paper
+  title="Stable Diffusion 3"
+  url="https://arxiv.org/abs/2403.03206"
+  authors="Esser et al. (Stability AI)"
+  venue="ICML 2024"
+>
+Rectified-flow transformers (MM-DiT) beat diffusion at text-to-image scale.
+</Paper>
+
+<Paper
+  title="Generator Matching"
+  url="https://arxiv.org/abs/2410.20587"
+  authors="Holderrieth et al."
+  venue="2024"
+>
+Generalizes FM from vector fields to generators of arbitrary Markov processes.
+</Paper>
+
+<Paper
+  title="Flow Matching Guide and Code"
+  url="https://arxiv.org/abs/2412.06264"
+  authors="Lipman et al."
+  venue="Dec 2024"
+>
+The canonical 100+ page reference + PyTorch library.
+</Paper>
+
+### 4. Discrete / categorical
+
+<Paper
+  title="Discrete FM via CTMC / MultiFlow"
+  url="https://arxiv.org/abs/2402.04997"
+  authors="Campbell, Yim et al."
+  venue="ICML 2024"
+>
+Discrete FM via continuous-time Markov chains; underlies MultiFlow.
+</Paper>
+
+<Paper
+  title="Discrete Flow Matching"
+  url="https://arxiv.org/abs/2407.15595"
+  authors="Gat et al. (Meta)"
+  venue="NeurIPS 2024"
+>
+Clean general formulation; non-autoregressive text at scale.
+</Paper>
+
+<Paper
+  title="Dirichlet Flow Matching"
+  url="https://arxiv.org/abs/2402.05841"
+  authors="Stark et al."
+  venue="ICML 2024"
+>
+Dirichlet-mixture paths on the simplex.
+</Paper>
+
+<Paper
+  title="Fisher Flow Matching"
+  url="https://arxiv.org/abs/2405.14664"
+  authors="Davis et al."
+  venue="NeurIPS 2024"
+>
+Simplex as a Fisher–Rao manifold — the geometrically canonical categorical FM.
+</Paper>
+
+<Paper
+  title="Categorical FM on Statistical Manifolds (SFM)"
+  url="https://arxiv.org/abs/2405.16441"
+  authors="Cheng et al."
+  venue="NeurIPS 2024"
+>
+Spherical geodesics induced by the Fisher metric.
+</Paper>
+
+<Paper
+  title="Variational Flow Matching / CatFlow"
+  url="https://arxiv.org/abs/2406.04843"
+  authors="Eijkelboom et al."
+  venue="NeurIPS 2024"
+>
+FM as variational inference over endpoint posteriors; unifies several discrete approaches.
+</Paper>
+
+<Paper
+  title="Riemannian Variational Flow Matching"
+  url="https://arxiv.org/abs/2502.12981"
+  authors="Bartosh et al."
+  venue="2025"
+>
+Riemannian extension of variational FM.
+</Paper>
+
+### 5. Language models
+
+<Paper
+  title="Flow Map Language Models (FLM/FMLM)"
+  url="https://arxiv.org/abs/2602.16813"
+  authors="Lee, Yoo, …, Boffi, Kim"
+  venue="Feb 2026"
+>
+One-hot text in continuous space; flow + distilled flow-map for one-step parallel text generation.
+</Paper>
+
+### 6. Biology
+
+#### Protein structure / co-design
+
+<Paper
+  title="FoldFlow"
+  url="https://arxiv.org/abs/2310.02391"
+  authors="Bose et al."
+  venue="ICLR 2024"
+>
+First major SE(3) FM for protein backbones; Riemannian FM + OT couplings.
+</Paper>
+
+<Paper
+  title="FrameFlow"
+  url="https://arxiv.org/abs/2310.05297"
+  authors="Yim, Campbell, Foong et al."
+  venue="NeurIPS 2023 MLSB"
+>
+Parallel SE(3) FM lineage; fast and designable.
+</Paper>
+
+<Paper
+  title="FoldFlow-2"
+  url="https://arxiv.org/abs/2405.20313"
+  authors="Huguet et al."
+  venue="2024"
+>
+Sequence-conditioned SE(3) FM with a pLM trunk.
+</Paper>
+
+<Paper
+  title="MultiFlow"
+  url="https://arxiv.org/abs/2402.04997"
+  authors="Campbell, Yim et al."
+  venue="ICML 2024"
+>
+Joint backbone-structure + sequence co-design.
+</Paper>
+
+<Paper
+  title="Proteina"
+  url="https://arxiv.org/abs/2503.00710"
+  authors="Geffner et al. (NVIDIA)"
+  venue="ICLR 2025 oral"
+>
+Scale-up — FM backbone generator, designable up to 800 residues, hierarchical fold-class conditioning.
+</Paper>
+
+<Paper
+  title="La-Proteina"
+  url="https://arxiv.org/abs/2507.09466"
+  authors="Geffner et al. (NVIDIA)"
+  venue="2025"
+>
+Partially latent FM for all-atom generation.
+</Paper>
+
+<Paper
+  title="ProtComposer"
+  url="https://arxiv.org/abs/2503.05025"
+  authors="Stärk, Jing, Wang, Geffner et al. (NVIDIA)"
+  venue="ICLR 2025 oral"
+>
+Compositional generation conditioned on 3D ellipsoid layouts.
+</Paper>
+
+#### Dynamics
+
+<Paper
+  title="AlphaFlow / ESMFlow"
+  url="https://arxiv.org/abs/2402.04845"
+  authors="Jing, Berger, Jaakkola"
+  venue="ICML 2024"
+>
+FM-ifies AlphaFold/ESMFold for ensemble sampling — bridges FM to the AlphaFold lineage.
+</Paper>
+
+#### Molecules
+
+<Paper
+  title="ET-Flow"
+  url="https://arxiv.org/abs/2410.22388"
+  authors="Hassan et al."
+  venue="NeurIPS 2024"
+>
+Equivariant FM for molecular conformers.
+</Paper>
+
+<Paper
+  title="FlowSite / HarmonicFlow"
+  url="https://arxiv.org/abs/2310.05764"
+  authors="Stärk, Jing et al."
+  venue="ICML 2024"
+>
+FM for ligand docking + binding-site design.
+</Paper>
+
+#### Protein engineering
+
+<Paper
+  title="EvoFlows"
+  url="https://arxiv.org/abs/2603.11703"
+  authors="Deutschmann et al. (Cradle)"
+  venue="March 2026"
+>
+Edit flows over evolutionary mutational trajectories.
+</Paper>
+
+#### Aggregator
+
+<Paper
+  title="Flow Matching Meets Biology — A Survey"
+  url="https://arxiv.org/abs/2507.17731"
+  authors="Zhang et al."
+  venue="npj AI 2025"
+>
+Comprehensive taxonomy + [companion repo](https://github.com/Violet24K/Awesome-Flow-Matching-Meets-Biology).
+</Paper>
+
+#### Contrast (diffusion, not FM)
+
+AlphaFold 3, RFdiffusion, Chroma, Genie 2, Boltz-1/2 — mention only as the diffusion-side reference points.
+
+### 7. 2025–2026 frontiers
+
+<Paper
+  title="MeanFlow"
+  url="https://arxiv.org/abs/2505.13447"
+  authors="Geng et al."
+  venue="May 2025"
+>
+Models *average* velocity for one-step generation; FID 3.43 on ImageNet-256 from scratch, no distillation.
+</Paper>
+
+<Paper
+  title="Inductive Moment Matching"
+  url="https://arxiv.org/abs/2503.07565"
+  authors="Zhou, Ermon, Song"
+  venue="ICML 2025"
+>
+Few-step generator, single-stage training; 1.99 FID @ 8 steps on ImageNet-256.
+</Paper>
+
+<Paper
+  title="Movie Gen"
+  url="https://arxiv.org/abs/2410.13720"
+  authors="Meta"
+  venue="Oct 2024"
+>
+30B FM transformer for HD T2V; ablations show FM beats diffusion at scale.
+</Paper>
+
+<Paper
+  title="Categorical Flow Maps"
+  url="https://arxiv.org/abs/2602.12233"
+  authors="Roos, Davis, Eijkelboom et al."
+  venue="Feb 2026"
+>
+Few-step categorical generation via simplex-constrained endpoints.
+</Paper>

@@ -1,0 +1,60 @@
+---
+const { title, url, authors, venue } = Astro.props;
+---
+<article class="paper-box">
+  <h4 class="paper-title">
+    <a href={url} target="_blank" rel="noopener noreferrer">{title}</a>
+  </h4>
+  {(authors || venue) && (
+    <p class="paper-meta">
+      {authors}{authors && venue && ' · '}{venue}
+    </p>
+  )}
+  <div class="paper-tldr">
+    <slot />
+  </div>
+</article>
+
+<style>
+  .paper-box {
+    border: 1px solid var(--border-color);
+    border-left: 3px solid var(--accent-color);
+    border-radius: 4px;
+    padding: 0.85rem 1.1rem;
+    margin: 0.75rem 0;
+    background: var(--light-bg);
+    transition: var(--transition);
+  }
+  .paper-box:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+  }
+  .paper-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  .paper-title a {
+    color: var(--primary-color);
+  }
+  .paper-title a:hover {
+    color: var(--accent-color);
+  }
+  .paper-meta {
+    font-size: 0.82rem;
+    color: var(--secondary-color);
+    margin: 0.2rem 0 0.4rem 0;
+    font-style: italic;
+  }
+  .paper-tldr {
+    font-size: 0.92rem;
+    color: var(--primary-color);
+    line-height: 1.5;
+  }
+  .paper-tldr :global(p) {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: inherit;
+  }
+</style>
