@@ -1,0 +1,368 @@
+---
+// Dev-only write mode: edit a post's raw source on the left, see the real
+// rendered post on the right, save straight to the file.
+//
+// The slug is read client-side from ?slug= (query params aren't available at
+// SSR for prerendered pages), so both the picker and the editor shell are
+// rendered and JS decides which to show.
+const isDev = import.meta.env.DEV;
+
+const modules = import.meta.glob('../blog/posts/*.{md,mdx}', { eager: true });
+const posts = Object.entries(modules)
+  .map(([p, mod]: [string, any]) => {
+    const file = p.split('/').pop() as string;
+    return {
+      slug: file.replace(/\.(md|mdx)$/, ''),
+      title: mod.frontmatter?.title ?? file,
+      isPrivate: mod.frontmatter?.public === false,
+    };
+  })
+  .sort((a, b) => a.title.localeCompare(b.title));
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Write mode</title>
+</head>
+<body>
+  {!isDev ? (
+    <div class="notice">
+      <h1>Write mode is dev-only</h1>
+      <p>Run the site locally with <code>./dev</code> and open this page on the dev server.</p>
+    </div>
+  ) : (
+    <>
+      <div class="notice" id="picker">
+        <h1>Write mode</h1>
+        <p>Pick a post to edit:</p>
+        <ul class="picker-list">
+          {posts.map(p => (
+            <li>
+              <a href={`/blog-all/edit?slug=${p.slug}`}>{p.title}</a>
+              {p.isPrivate && <span class="tag">private</span>}
+            </li>
+          ))}
+        </ul>
+        <p><a href="/blog-all/">← Back to all posts</a></p>
+      </div>
+
+      <div class="editor" id="editor" hidden>
+        <header class="toolbar">
+          <a class="back" href="/blog-all/">← All posts</a>
+          <span class="slug" id="slug-label"></span>
+          <span class="spacer"></span>
+          <label class="autosave">
+            <input type="checkbox" id="autosave" /> Auto-save
+          </label>
+          <span class="status" id="status">loading…</span>
+          <button id="save" type="button">Save <kbd>⌘S</kbd></button>
+        </header>
+        <main class="panes" id="panes">
+          <section class="pane pane-edit" id="pane-edit">
+            <textarea id="src" spellcheck="false" disabled placeholder="Loading…"></textarea>
+          </section>
+          <div class="divider" id="divider"></div>
+          <section class="pane pane-preview">
+            <div class="charbar" id="charbar" aria-label="Insert characters"></div>
+            <iframe id="preview" title="Preview"></iframe>
+          </section>
+        </main>
+      </div>
+    </>
+  )}
+
+  <style is:global>
+    html, body { margin: 0; height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #1f2937;
+    }
+    .notice { max-width: 640px; margin: 4rem auto; padding: 0 1.5rem; }
+    .notice code { background: #f3f4f6; padding: 0.1rem 0.35rem; border-radius: 4px; }
+    .picker-list { list-style: none; padding: 0; }
+    .picker-list li { padding: 0.4rem 0; }
+    .tag {
+      margin-left: 0.5rem; padding: 0.1rem 0.45rem; font-size: 0.7rem;
+      text-transform: uppercase; background: #fef3c7; color: #92400e; border-radius: 4px;
+    }
+
+    .editor { display: flex; flex-direction: column; height: 100vh; }
+    .toolbar {
+      display: flex; align-items: center; gap: 0.9rem;
+      padding: 0.5rem 1rem; border-bottom: 1px solid #e5e7eb; background: #fafafa;
+      font-size: 0.9rem; flex: 0 0 auto;
+    }
+    .toolbar .back { text-decoration: none; color: #2563eb; white-space: nowrap; }
+    .toolbar .slug { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #6b7280; }
+    .toolbar .spacer { flex: 1; }
+    .toolbar .autosave { display: flex; align-items: center; gap: 0.3rem; color: #374151; white-space: nowrap; }
+    .status { color: #6b7280; min-width: 7rem; text-align: right; }
+    .status.dirty { color: #b45309; }
+    .status.saved { color: #15803d; }
+    .status.error { color: #dc2626; }
+    #save {
+      padding: 0.4rem 0.8rem; border: 1px solid #2563eb; background: #2563eb; color: #fff;
+      border-radius: 6px; cursor: pointer; font-size: 0.9rem; white-space: nowrap;
+    }
+    #save:disabled { opacity: 0.5; cursor: default; }
+    #save kbd { font-family: inherit; font-size: 0.75em; opacity: 0.8; margin-left: 0.2rem; }
+
+    .panes { display: flex; flex: 1; min-height: 0; }
+    .pane { min-width: 0; height: 100%; overflow: hidden; }
+    .pane-edit { flex: 1 1 50%; }
+    .pane-preview { flex: 1 1 50%; }
+    #src {
+      width: 100%; height: 100%; box-sizing: border-box; border: 0; resize: none;
+      padding: 1rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 13px; line-height: 1.5; outline: none; tab-size: 2;
+      background: #fbfbfd; color: #111827;
+    }
+    .pane-preview { position: relative; }
+    #preview { width: 100%; height: 100%; border: 0; background: #fff; }
+    .divider { flex: 0 0 6px; cursor: col-resize; background: #e5e7eb; }
+    .divider:hover { background: #cbd5e1; }
+
+    /* Floating quick-insert bar for characters that are awkward to type on an
+       iPad keyboard (backslash, tilde, braces, math delimiters, …). */
+    .charbar {
+      position: absolute; top: 8px; right: 8px; left: auto;
+      max-width: calc(100% - 16px);
+      display: flex; gap: 6px; flex-wrap: nowrap; overflow-x: auto;
+      padding: 6px; border-radius: 10px; z-index: 5;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.18);
+      -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+      -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    }
+    .charbar::-webkit-scrollbar { display: none; }
+    .charbar button {
+      flex: 0 0 auto; min-width: 38px; height: 38px; padding: 0 8px;
+      border: 1px solid #d1d5db; border-radius: 8px; background: #fff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 16px; line-height: 1; color: #111827; cursor: pointer;
+      touch-action: manipulation;
+    }
+    .charbar button:active { background: #e5e7eb; }
+  </style>
+
+  <script>
+    const editor = document.getElementById('editor');
+    const slug = new URLSearchParams(location.search).get('slug');
+
+    if (editor && slug) {
+      document.getElementById('picker')?.setAttribute('hidden', '');
+      editor.hidden = false;
+
+      const src = document.getElementById('src');
+      const status = document.getElementById('status');
+      const saveBtn = document.getElementById('save');
+      const autosave = document.getElementById('autosave');
+      const preview = document.getElementById('preview');
+      document.getElementById('slug-label').textContent = slug + '.mdx';
+      document.title = 'Write — ' + slug;
+      preview.src = '/blog/posts/' + slug + '/';
+
+      let savedValue = '';
+      let saveTimer = null;
+
+      const setStatus = (text, cls) => {
+        status.textContent = text;
+        status.className = 'status' + (cls ? ' ' + cls : '');
+      };
+      const isDirty = () => src.value !== savedValue;
+      const refreshState = () =>
+        isDirty() ? setStatus('unsaved changes', 'dirty') : setStatus('saved', 'saved');
+
+      fetch('/api/post?slug=' + encodeURIComponent(slug))
+        .then(r => r.json())
+        .then(data => {
+          if (data.error) { setStatus(data.error, 'error'); return; }
+          src.value = data.content;
+          savedValue = data.content;
+          src.disabled = false;
+          setStatus('saved', 'saved');
+          src.focus();
+        })
+        .catch(() => setStatus('failed to load', 'error'));
+
+      const save = async () => {
+        if (!isDirty()) return;
+        const toSave = src.value;
+        setStatus('saving…');
+        saveBtn.disabled = true;
+        try {
+          const res = await fetch('/api/post', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ slug, content: toSave }),
+          });
+          const data = await res.json();
+          if (!res.ok || data.error) throw new Error(data.error || 'save failed');
+          savedValue = toSave;
+          refreshState();
+          // Astro HMR usually refreshes the iframe on its own; reload to be sure.
+          setTimeout(() => { try { preview.contentWindow.location.reload(); } catch {} }, 300);
+        } catch (e) {
+          setStatus(e.message || 'save failed', 'error');
+        } finally {
+          saveBtn.disabled = false;
+        }
+      };
+
+      src.addEventListener('input', () => {
+        refreshState();
+        if (autosave.checked) {
+          clearTimeout(saveTimer);
+          saveTimer = setTimeout(save, 1200);
+        }
+      });
+
+      // Tab inserts two spaces.
+      src.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          const s = src.selectionStart, end = src.selectionEnd;
+          src.value = src.value.slice(0, s) + '  ' + src.value.slice(end);
+          src.selectionStart = src.selectionEnd = s + 2;
+        }
+      });
+
+      // ⌘S / Ctrl+S saves.
+      window.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
+          e.preventDefault();
+          clearTimeout(saveTimer);
+          save();
+        }
+      });
+
+      saveBtn.addEventListener('click', () => { clearTimeout(saveTimer); save(); });
+
+      // --- Quick-insert bar for awkward characters (iPad-friendly) ---
+      // Each token is [label, open, close?]. With text selected, a paired token
+      // wraps the selection; otherwise it inserts and places the caret sensibly.
+      const charbar = document.getElementById('charbar');
+      const TOKENS = [
+        ['\\', '\\'], ['~', '~'], ['`', '`'], ['^', '^'], ['_', '_'],
+        ['|', '|'], ['#', '#'], ['<', '<'], ['>', '>'], ['$', '$'],
+        ['{ }', '{', '}'], ['[ ]', '[', ']'],
+        ['$$', '$', '$'], ['` `', '`', '`'], ['**', '**', '**'],
+      ];
+
+      const insertToken = (open, close) => {
+        close = close || '';
+        const s = src.selectionStart, e = src.selectionEnd;
+        const sel = src.value.slice(s, e);
+        const ins = open + sel + close;
+        src.value = src.value.slice(0, s) + ins + src.value.slice(e);
+        // With a selection: caret after the wrapped text. Without: between the
+        // pair (e.g. inside the braces / $…$), or right after a single char.
+        const caret = sel ? s + ins.length : s + open.length;
+        src.selectionStart = src.selectionEnd = caret;
+        src.dispatchEvent(new Event('input', { bubbles: true }));
+        src.focus();
+      };
+
+      for (const [label, open, close] of TOKENS) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = label;
+        // pointerdown + preventDefault keeps the textarea focused, so tapping a
+        // button on iPad doesn't dismiss the keyboard or drop the caret.
+        b.addEventListener('pointerdown', (ev) => { ev.preventDefault(); insertToken(open, close); });
+        charbar.appendChild(b);
+      }
+
+      // --- Double-click in preview -> scroll source to that section ---
+
+      // Collapse whitespace + lowercase, keeping a map back to source indices.
+      const normMap = (s) => {
+        let text = '', prevSpace = false;
+        const map = [];
+        for (let i = 0; i < s.length; i++) {
+          const ch = s[i];
+          if (ch === ' ' || ch === '\t' || ch === '\n' || ch === '\r') {
+            if (prevSpace) continue;
+            text += ' '; map.push(i); prevSpace = true;
+          } else {
+            text += ch.toLowerCase(); map.push(i); prevSpace = false;
+          }
+        }
+        return { text, map };
+      };
+
+      // Find where a rendered snippet lives in the raw source. Tries the longest
+      // leading word-run first (markdown like ** or [ ]( ) breaks longer runs),
+      // then falls back to a distinctive single word.
+      const locate = (snippet) => {
+        const ns = normMap(src.value);
+        const words = snippet.toLowerCase().replace(/\s+/g, ' ').trim().split(' ').filter(Boolean);
+        for (let n = Math.min(words.length, 12); n >= 2; n--) {
+          const i = ns.text.indexOf(words.slice(0, n).join(' '));
+          if (i !== -1) return ns.map[i];
+        }
+        const w = words.find(x => x.length >= 5);
+        if (w) { const i = ns.text.indexOf(w); if (i !== -1) return ns.map[i]; }
+        return -1;
+      };
+
+      // Scroll a textarea so a character offset is roughly centered, then select
+      // the line. (Textareas have no native "scroll to offset", so measure by
+      // temporarily truncating to that offset.)
+      const scrollSourceTo = (idx) => {
+        const val = src.value;
+        src.value = val.slice(0, idx);
+        const upto = src.scrollHeight;
+        src.value = val;
+        src.scrollTop = Math.max(0, upto - src.clientHeight / 2);
+        let end = val.indexOf('\n', idx);
+        if (end === -1) end = idx;
+        src.focus();
+        src.setSelectionRange(idx, end);
+      };
+
+      const attachPreviewSync = () => {
+        let doc;
+        try { doc = preview.contentDocument; } catch { return; }
+        if (!doc) return;
+        doc.addEventListener('dblclick', (e) => {
+          const el = e.target.closest('h1,h2,h3,h4,h5,h6,p,li,blockquote,pre,td,figcaption,a');
+          if (!el) return;
+          const snippet = (el.textContent || '').trim();
+          if (!snippet) return;
+          let idx = locate(snippet);
+          if (idx === -1) return;
+          // Refine to the double-clicked word if it sits just after the match.
+          const word = (preview.contentWindow.getSelection?.().toString() || '').trim();
+          if (word && /\w{3,}/.test(word)) {
+            const wi = src.value.toLowerCase().indexOf(word.toLowerCase(), idx);
+            if (wi !== -1 && wi < idx + 600) idx = wi;
+          }
+          scrollSourceTo(idx);
+        });
+      };
+      preview.addEventListener('load', attachPreviewSync);
+
+      window.addEventListener('beforeunload', (e) => {
+        if (isDirty()) { e.preventDefault(); e.returnValue = ''; }
+      });
+
+      // Draggable divider.
+      const divider = document.getElementById('divider');
+      const panes = document.getElementById('panes');
+      const editPane = document.getElementById('pane-edit');
+      let dragging = false;
+      divider.addEventListener('mousedown', () => { dragging = true; document.body.style.userSelect = 'none'; });
+      window.addEventListener('mouseup', () => { dragging = false; document.body.style.userSelect = ''; });
+      window.addEventListener('mousemove', (e) => {
+        if (!dragging) return;
+        const rect = panes.getBoundingClientRect();
+        const pct = Math.min(85, Math.max(15, ((e.clientX - rect.left) / rect.width) * 100));
+        editPane.style.flex = '0 0 ' + pct + '%';
+      });
+    }
+  </script>
+</body>
+</html>

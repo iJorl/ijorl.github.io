@@ -9,8 +9,55 @@ imageAlt: "Placeholder figure"
 ---
 
 import Paper from '../../../components/Paper.astro';
+import Callout from '../../../components/Callout.astro';
 
-*Draft.*
+
+<Callout type="tip" title="Disclaimer">
+This blog post or series of blog posts is my way of diving further into topics I find particularly fascinating. As such, there exist better blog posts for explaining these concepts in more (technical) detail elsewhere. Keep in mind that all of the things outlined here are mainly my take/understanding of the topics, so there might be a misunderstanding or technical inaccuracy every now and then. If you find something interesting to discuss, or a thing to ammend please reach out, I am happy to chat about it!
+</Callout>
+
+---
+
+# Motivation
+
+What do we want to achieve with flow matching or more generally with generative AI? It mainly boils down to one single thing: access to the underlying data distribution $q$. 
+$$
+q(\cdot) \quad \text{data distribution}
+$$
+Why is this hard, why don't we easily have this? Usually we only control this kind of access if we understand the target distribution sufficiently well. Say we have a complete statistical description of it, (uniform in the intervall 0,1, or multimodal gaussian) or we have access to it through computation / simulation (is this number prime, how will this protein fold). However, for more complex data, we do not have this sort of insights, or even arbitrary (efficient) access of the underlying data distribution $q$. Instead we only have a collection of samples (our dataset) from that distribution. This can be text snippets, molecules or cat images that we abstract away as $x_0, \dots, x_N \sim q$. So our goal is to gain access by learning to approximate $q$ from the data.
+
+Why is this useful? Once we have learned a good $q$ we can sample from it. Generate a new image, song or peptide from scratch. More interestingly we can do conditional sampling. What is the most likely next word given my previous text (LLMs, next token prediction), how can you make this compound more safe (drug design, steering) or what is the next soduko entry given my current state (reasoning). Besides, we might want to evaluate likelyhoods for uncertainty estimation or classification (is this cell scan more likely to be healthy or malicous).
+
+
+# Resources:
+Besides papers i mention i found these recordings very helpful
+- https://youtu.be/sKB6AjrQMrE?is=N1pnAls-mmzhxVn8
+- 
+# Background
+
+So how do we actually get access to our target $q$? Usually we start from a starting distribution $p$ that is simple (and we can sample from), say a gaussian and try to transform it into $q$ through a learned function $f_\theta$.
+
+$$
+\begin{aligned}
+x &\sim p(\cdot) && \text{easily accessible} \\
+y &= f_\theta(x) && \text{transform to data}\\
+y &\sim q(\cdot) && \text{datalike sample}
+\end{aligned}
+$$
+
+This is more general than just flows, i.e. VAEs can also be captured in this framework. In the following I try to give some more background on how we went from this general idea to the flow matching formulation. 
+There are a few key things I will try to keep track of, namely a) how do we design our $f$ b) what is our loss and c) how do we manage to train this in the end. 
+
+
+## VAE
+Let's kick this off with a canonical example, the VAEs. The principle is simple, we want to sample from a gaussian and use a single learnable neural network f (either mlp, or resnet, ...) to map it to the data distribution. Further, we train it to reconstruct (AE) and an additional KL term to form the latents into something that minimizes the actual data distribution. 
+
+Usually this process and notation are depicted a bit differently. In the following we will use $f$ to denote the decoder part, and $g$ to denote the encoder part of the autoencoder. 
+
+talk a bit about the general idea, pushing one distribution that is tractable through some function etc, split into smaller functions, then the key thing seems to be how to train this; usually you want to opitmize the KL, so directly the likelyhood; but they figured out you can instead just train to match the velocoty fields
+
+
+
 
 ## Claude's suggestions
 

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Spin up the website locally with live-reload.
+# Edits to .astro/.mdx/content files refresh the browser automatically.
+set -euo pipefail
+cd "$(dirname "$0")"
+
+# Install deps on first run (or after package.json changes).
+if [ ! -d node_modules ]; then
+  echo "Installing dependencies..."
+  npm install
+fi
+
+# --open launches your browser; --host exposes it on the LAN if you want it.
+exec npm run dev -- --open "$@"

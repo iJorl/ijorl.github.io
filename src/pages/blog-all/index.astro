@@ -1,10 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
+const isDev = import.meta.env.DEV;
 const modules = import.meta.glob('../blog/posts/*.{md,mdx}', { eager: true });
-const posts = Object.values(modules).map((mod: any) => ({
+const posts = Object.entries(modules).map(([p, mod]: [string, any]) => ({
   url: mod.url,
   frontmatter: mod.frontmatter,
+  slug: (p.split('/').pop() as string).replace(/\.(md|mdx)$/, ''),
 }));
 const sorted = posts.sort((a, b) =>
   new Date(b.frontmatter.date).valueOf() - new Date(a.frontmatter.date).valueOf()
@@ -16,7 +18,10 @@ const fmt = (d: string | Date) =>
 <BaseLayout title="All Posts - Joël Mathys">
   <section>
     <h1>All Posts</h1>
-    <p>Every blog post, including drafts and private notes.</p>
+    <p>
+      Every blog post, including drafts and private notes.
+      {isDev && <> · <a href="/blog-all/edit">✏️ Write mode</a></>}
+    </p>
 
     {sorted.length === 0 ? (
       <p><em>No posts yet.</em></p>
@@ -25,7 +30,8 @@ const fmt = (d: string | Date) =>
         {sorted.map(post => {
           const isPrivate = post.frontmatter.public === false;
           return (
-            <li>
+            <li class="blog-li">
+              {isDev && <a class="edit-btn" href={`/blog-all/edit?slug=${post.slug}`}>✏️ Edit</a>}
               <a href={post.url} class="blog-card">
                 <div class="blog-card-image">
                   <img src={post.frontmatter.image} alt={post.frontmatter.imageAlt || post.frontmatter.title} />
@@ -48,6 +54,21 @@ const fmt = (d: string | Date) =>
 </BaseLayout>
 
 <style>
+  .blog-li { position: relative; }
+  .edit-btn {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    z-index: 2;
+    padding: 0.2rem 0.55rem;
+    font-size: 0.75rem;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    color: #374151;
+    text-decoration: none;
+  }
+  .edit-btn:hover { background: #2563eb; color: #fff; border-color: #2563eb; }
   .blog-private-tag {
     display: inline-block;
     margin-left: 0.5rem;
